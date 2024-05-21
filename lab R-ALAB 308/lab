@@ -1,0 +1,63 @@
+//function ?
+let csvData = "ID, Name, Occupation, Age \\n42, Bruce, Knight, 41\\n57, Bob, Fry Cook, 19\\n63, Blaine, Quiz Master, 58\\98, Bill, Doctor's Assistant, 26";
+
+let csvArr = csvData.split("\\n");
+let numColumns = csvArr[0].split(',').length;
+
+let csv2DArr = csvArr.map(function(row) {
+    return row.split(',').map(function(item) {
+        return item.trim();
+    });
+});
+
+console.table(csv2DArr);
+ 
+// Part 3
+
+let headings = csvArr[0].map(function(heading) {
+    return heading.toLowerCase();
+});
+
+
+let csv2DArr = csvArr.slice(1);
+
+
+let results = csv2DArr.map(function(row) {
+    let obj = {};
+    row.forEach(function(value, index) {
+        obj[headings[index]] = value;
+    });
+    return obj;
+});
+
+
+console.table(results);
+
+// Part 4
+results.pop();
+results.splice(1, 0, { id: "48", name: "Barry", occupation: "Runner", age: "25" });
+results.push({ id: "7", name: "Bilbo", occupation: "None", age: "111" });
+
+///loop time - to print out results
+let totalAge = 0;
+for (let i = 0; i < results.length; i++) {
+    totalAge += parseInt(results[i].age);
+}
+let averageAge = totalAge / results.length;
+
+
+console.log("Average age:", averageAge);
+// Part 5: Transform the final set of data back into CSV format
+
+
+
+
+let csvString = Object.keys(results[0]).join(", ") + "\\n";
+
+for (let i = 0; i < results.length; i++) {
+    let values = Object.values(results[i]).join(", ");
+    csvString += values + "\\n";
+}
+
+
+console.log(csvString);
